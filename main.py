@@ -21,7 +21,6 @@ def inserirFrase():
     if len(texto) % 2 != 0:
         texto += "g"
 
-    print("o texto é: {}".format(texto))  # imprime o texto informado na tela
     return texto
 
 
@@ -69,8 +68,39 @@ def cifraHill(texto, chave):
     return codigo
 
 
+def inversaHill(codigo, chave_inversa):
+    matriz_decodificada = []
+
+    valorNumerico = [0, 0]
+    valorDecodificado = [0, 0]
+
+    for indice in range(0, len(codigo)):
+        if indice == 0 or indice % 2 == 0:
+            valor = equivalenteDecimal(codigo[indice])
+            valorNumerico[0] = valor
+
+        if indice != 0 and indice % 2 != 0:
+            valor = equivalenteDecimal(codigo[indice])
+            valorNumerico[1] = valor
+
+        if indice != 0 and indice % 2 != 0:
+            valorDecodificado[0] = chave_inversa[0][0] * valorNumerico[0] + chave_inversa[0][1] * valorNumerico[1]
+            valorDecodificado[1] = chave_inversa[1][0] * valorNumerico[0] + chave_inversa[1][1] * valorNumerico[1]
+
+            if valorDecodificado[0] > len(alfabeto) - 1:
+                valorDecodificado[0] = (valorDecodificado[0] % len(alfabeto))
+
+            if valorDecodificado[1] > len(alfabeto) - 1:
+                valorDecodificado[1] = (valorDecodificado[1] % len(alfabeto))
+
+            matriz_decodificada.append([valorDecodificado[0], valorDecodificado[1]])
+
+    return matriz_decodificada
+
+
 texto = inserirFrase()
 codigo = cifraHill(texto, A)
+matriz_decodificada = inversaHill(codigo, A)
 
+print("Matriz decodificada: ", matriz_decodificada)
 print(codigo)
-
